@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+'use strict';
+
 var chai = require('chai');
 var should = chai.should();
 var User = require('../models/User');
-mongoose.connect('mongodb://localhost/test');
 
 var userCase;
 
@@ -23,7 +23,7 @@ describe('User Model', function() {
     userCase.save(function(err) {
       if (err) return done(err);
       done();
-    })
+    });
   });
 
   it('should not create a user with the unique email', function(done) {

@@ -1,9 +1,11 @@
+'use strict';
+
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
 var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
-  password: String,
+  email: { type: String, unique: true, lowercase: true, required: true },
+  password: { type: String, required: true },
 
   facebook: String,
   twitter: String,
