@@ -17,11 +17,12 @@ router.post('/signup', function(req, res) {
 	});
 });
 
-router.post('/login', passport.authenticate('login'), function(req, res) {
+router.post('/login', passport.authenticate('local'), function(req, res) {
 	res.json({msg: req.user.email + ' logged in'});
 });
 
 router.post('/logout', function(req, res) {
+	console.log(req.user);
 	req.logout();
 	res.json({msg: 'user logged out'});
 });
