@@ -7,7 +7,7 @@
 
 ## Launching the server
 
-1. ```npm run start```
+1. ```npm start```
 
 ## Compiling Sass
 

@@ -4,3 +4,4 @@ npm-debug.log
 .sass-cache
 public/stylesheets/*
 !*/.gitkeep
+config/private.js

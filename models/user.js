@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 var userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true, required: true },
-  password: { type: String, required: true },
+  password: String,
 
   facebook: String,
   twitter: String,
@@ -21,7 +21,9 @@ var userSchema = new mongoose.Schema({
     location: { type: String, default: '' },
     website: { type: String, default: '' },
     picture: { type: String, default: '' }
-  }
+  },
+
+  dateAdded: { type: Date, default: Date.now }
 });
 
 /**

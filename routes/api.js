@@ -6,31 +6,65 @@ var User = require('../models/user');
 var passport = require('passport');
 require('../lib/passport');
 
-router.post('/signup', passport.authenticate('local-signup'), function(req, res) {
-		res.status(201).json({msg: req.user.email + ' created'});
+router.post('/auth/signup', function(req, res) {
+	req.assert('email', 'Email is not valid').isEmail();
+	req.assert('password', 'Password cannot be blank').len(4);
+
+	var errors = req.validationErrors();
+
+	if (errors) {
+		req.flash('errors', errors);
+		return res.status(400).json({err: errors});
+	}
+
+	var email = req.body.email;
+	var password = req.body.password;
+    User.findOne({ 'email' :  email },
+      function(err, user) {
+        if (err) return res.status(400).json({err: err});
+
+        if (user){
+          console.log(email + ' already exists');
+	        return res.status(401).json({msg: email + ' already exists'});
+        }
+
+        var newUser = new User({
+			email: email,
+			password: password
+        });
+        newUser.save(function(err) {
+          if (err) return res.status(400).json({err: err});
+          req.login(newUser, function(err) {
+          	console.log('login', err);
+	        if (err) return res.status(400).json({err: err});
+          	res.status(201).json({msg: email + ' created'});
+          });
+        });
+      }
+    );
 });
 
-router.post('/login', passport.authenticate('local-login'), function(req, res) {
+router.post('/auth/login', passport.authenticate('local-login'), function(req, res) {
 		res.json({msg: req.user.email + ' logged in'});
 });
 
-router.post('/logout', isLoggedIn, function(req, res) {
+router.post('/auth/logout', isLoggedIn, function(req, res) {
 	var email = req.user.email;
 	req.logout();
 	res.json({msg: email + ' logged out'});
 });
 
-router.post('/destroy', isLoggedIn, function(req, res) {
+router.post('/auth/destroy', isLoggedIn, function(req, res) {
 	var email = req.user.email;
     User.remove({ email: email }, function(err) {
-    	if (err) return res.status(400).json({msg: 'user not deleted'});
+    	if (err) return res.status(400).json({err: 'user not deleted'});
     	res.json({msg: email + ' deleted'});
     });
 });
 
 router.get('/profile', isLoggedIn, function(req, res) {
 	User.findOne({email: req.user.email}, function(err, user) {
-		if (err) return res.status(400).json({msg: 'no profile found'});
+		if (err) return res.status(400).json({err: 'no profile found'});
 		res.json({msg: user.email});
 	});
 });
@@ -42,5 +76,5 @@ function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
-	else return res.status(401).json({msg: 'You must be logged in to perform this action'});
+	else return res.status(401).json({err: 'You must be logged in to perform this action'});
 }

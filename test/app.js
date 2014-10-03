@@ -8,41 +8,41 @@ var agent = request.agent(app);
 describe('POST /api/signup', function() {
   it('should create a new user', function(done) {
     request(app)
-      .post('/api/signup')
+      .post('/api/auth/signup')
       .send({
       	'email': 'test2@gmail.com',
       	'password': 'password'
-      	})
+    	})
       .expect(201, done);
   });
   it('should not create duplicate user', function(done) {
     request(app)
-      .post('/api/signup')
+      .post('/api/auth/signup')
       .send({
       	'email': 'test2@gmail.com',
       	'password': 'password'
-      	})
+    	})
       .expect(401, done);
   });
 });
 describe('POST /api/login', function() {
   it('should login with correct credentials', function(done) {
   	agent
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({
       	'email': 'test2@gmail.com',
-		'password': 'password'
-		})
-	  .expect(200, done);
+				'password': 'password'
+			})
+		  .expect(200, done);
   });
   it('should not login with bad credentials', function(done) {
   	request(app)
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({
       	'email': 'test2@gmail.com',
-		'password': 'fakepass'
-		})
-	  .expect(401, done);
+				'password': 'fakepass'
+			})
+		  .expect(401, done);
   });
 });
 describe('GET /api/profile', function() {
@@ -55,7 +55,7 @@ describe('GET /api/profile', function() {
 describe('POST /api/logout', function() {
   it('should logout', function(done) {
   	agent
-  	  .post('/api/logout')
+  	  .post('/api/auth/logout')
   	  .send({
   	  	'email': 'test2@gmail.com'
   	  })
@@ -65,19 +65,16 @@ describe('POST /api/logout', function() {
 describe('POST /api/destroy', function() {
   it('should log in to test destroy', function(done) {
   	agent
-      .post('/api/login')
+      .post('/api/auth/login')
       .send({
       	'email': 'test2@gmail.com',
-		'password': 'password'
-	  })
-	  .expect(200, done);
+				'password': 'password'
+		  })
+		  .expect(200, done);
   });
   it('should destroy a user', function(done) {
     agent
-      .post('/api/destroy')
-      .send({
-      	'email': 'test2@gmail.com'
-      })
+      .post('/api/auth/destroy')
       .expect(200, done);
   });
 });
