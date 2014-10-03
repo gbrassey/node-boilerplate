@@ -1,4 +1,4 @@
-# Node Boilerplate
+# Node Boilerplate [![Build Status](https://travis-ci.org/gbrassey/node-boilerplate.svg?branch=master)](https://travis-ci.org/gbrassey/node-boilerplate)
 
 ## Setup
 
