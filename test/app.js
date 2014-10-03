@@ -1,14 +1,15 @@
 'use strict';
 
 process.env.NODE_ENV = 'test';
-var request = require('supertest');
 var app = require('../app.js');
+var request = require('supertest');
+var agent = request.agent(app);
 
 describe('POST /api/signup', function() {
   it('should create a new user', function(done) {
     request(app)
       .post('/api/signup')
-      .send({ 
+      .send({
       	'email': 'test2@gmail.com',
       	'password': 'password'
       	})
@@ -17,7 +18,7 @@ describe('POST /api/signup', function() {
   it('should not create duplicate user', function(done) {
     request(app)
       .post('/api/signup')
-      .send({ 
+      .send({
       	'email': 'test2@gmail.com',
       	'password': 'password'
       	})
@@ -26,7 +27,7 @@ describe('POST /api/signup', function() {
 });
 describe('POST /api/login', function() {
   it('should login with correct credentials', function(done) {
-    request(app)
+  	agent
       .post('/api/login')
       .send({
       	'email': 'test2@gmail.com',
@@ -44,9 +45,16 @@ describe('POST /api/login', function() {
 	  .expect(401, done);
   });
 });
+describe('GET /api/profile', function() {
+	it('should return profile data while logged in', function(done) {
+		agent
+		  .get('/api/profile')
+		  .expect(200, done);
+	});
+});
 describe('POST /api/logout', function() {
   it('should logout', function(done) {
-  	request(app)
+  	agent
   	  .post('/api/logout')
   	  .send({
   	  	'email': 'test2@gmail.com'
@@ -55,8 +63,17 @@ describe('POST /api/logout', function() {
   });
 });
 describe('POST /api/destroy', function() {
+  it('should log in to test destroy', function(done) {
+  	agent
+      .post('/api/login')
+      .send({
+      	'email': 'test2@gmail.com',
+		'password': 'password'
+	  })
+	  .expect(200, done);
+  });
   it('should destroy a user', function(done) {
-    request(app)
+    agent
       .post('/api/destroy')
       .send({
       	'email': 'test2@gmail.com'
