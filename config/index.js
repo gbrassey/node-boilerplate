@@ -8,10 +8,12 @@ switch (process.env.NODE_ENV) {
 		break;
 	case 'development':
 		config.mongodb = 'mongodb://localhost/events-chat-dev';
+		config.secrets = require('./secrets');
 		config.seed = true;
 		break;
 	case 'production':
 		config.mongodb = 'mongodb://localhost/events-chat';
+		config.secrets = require('./secrets');
 		break;
 }
 

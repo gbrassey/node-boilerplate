@@ -11,7 +11,8 @@ describe('POST /api/signup', function() {
       .post('/api/auth/signup')
       .send({
       	'email': 'test2@gmail.com',
-      	'password': 'password'
+      	'password': 'password',
+      	'confirmPassword': 'password'
     	})
       .expect(201, done);
   });
@@ -20,7 +21,8 @@ describe('POST /api/signup', function() {
       .post('/api/auth/signup')
       .send({
       	'email': 'test2@gmail.com',
-      	'password': 'password'
+      	'password': 'password',
+      	'confirmPassword': 'password'
     	})
       .expect(401, done);
   });

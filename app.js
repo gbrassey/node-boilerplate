@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(expressSession({
-    secret: '<mysecret>',
+    secret: (config.secrets) ? config.secrets.appSecret : 'mysecret',
     saveUninitialized: true,
     resave: true
 }));

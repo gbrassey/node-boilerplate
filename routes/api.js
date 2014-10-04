@@ -9,11 +9,11 @@ require('../lib/passport');
 router.post('/auth/signup', function(req, res) {
 	req.assert('email', 'Email is not valid').isEmail();
 	req.assert('password', 'Password cannot be blank').len(4);
+	req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
 
 	var errors = req.validationErrors();
 
 	if (errors) {
-		req.flash('errors', errors);
 		return res.status(400).json({err: errors});
 	}
 
