@@ -24,8 +24,7 @@ router.post('/auth/signup', function(req, res) {
         if (err) return res.status(400).json({err: err});
 
         if (user){
-          console.log(email + ' already exists');
-	        return res.status(401).json({msg: email + ' already exists'});
+          return res.status(401).json({msg: email + ' already exists'});
         }
 
         var newUser = new User({
@@ -35,7 +34,6 @@ router.post('/auth/signup', function(req, res) {
         newUser.save(function(err) {
           if (err) return res.status(400).json({err: err});
           req.login(newUser, function(err) {
-          	console.log('login', err);
 	        if (err) return res.status(400).json({err: err});
           	res.status(201).json({msg: email + ' created'});
           });
