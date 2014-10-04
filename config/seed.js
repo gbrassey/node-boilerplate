@@ -8,7 +8,7 @@ User.find({}).remove(function() {
 		email: 'test@test.com',
 		password: 'test'
 	}, {
-		name: 'George',
+		name: 'George Brassey',
 		email: 'gbrassey@gmail.com',
 		password: 'password'
 	}, function() {
